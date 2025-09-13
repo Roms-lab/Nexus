@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebRetro - RetroArch in your browser</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #000;
+            color: #fff;
+            font-family: sans-serif;
+            text-align: center;
+        }
+        #webretro-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="webretro-container">
+        <h1>Loading WebRetro...</h1>
+    </div>
+
+    <!-- The embed script pulls all necessary files from jsDelivr via GitHub -->
+    <script src="https://cdn.jsdelivr.net/gh/BinBashBanana/webretro@master/embed/embed.js"></script>
+    <script>
+        window.onload = function() {
+            webretroEmbed(document.getElementById("webretro-container"));
+        };
+    </script>
+</body>
+</html>
