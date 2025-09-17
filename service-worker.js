@@ -1,28 +1,43 @@
-const CACHE_NAME = 'nexus-offline-cache-v1';
+const CACHE_NAME = 'nexus-cache-v1';
 const OFFLINE_URL = 'offline.html';
 
-// Cache the offline page when the service worker is installed
+// Add all files that should be available offline
+const assetsToCache = [
+  '/', // The root directory
+  OFFLINE_URL,
+  'index.html',
+  'main.html',
+  // Add other critical assets like CSS and JS files
+];
+
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log('[ServiceWorker] Caching offline page');
-      return cache.add(OFFLINE_URL);
+      console.log('[ServiceWorker] Caching essential assets');
+      return cache.addAll(assetsToCache);
     })
   );
 });
 
-// Serve the offline page when a network request fails
 self.addEventListener('fetch', (event) => {
-  if (event.request.mode === 'navigate') {
-    event.respondWith(
-      fetch(event.request).catch(() => {
-        return caches.match(OFFLINE_URL);
-      })
-    );
-  }
+  event.respondWith(
+    caches.match(event.request).then((response) => {
+      // Return cached asset if found
+      if (response) {
+        return response;
+      }
+
+      // If not in cache, try fetching from the network
+      return fetch(event.request).catch(() => {
+        // If network fails, serve the offline page for navigation requests
+        if (event.request.mode === 'navigate') {
+          return caches.match(OFFLINE_URL);
+        }
+      });
+    })
+  );
 });
 
-// Optional: clean up old caches on activation
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) => {
