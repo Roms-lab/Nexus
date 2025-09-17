@@ -138,6 +138,57 @@
 
     <div class="container">
         <h2 class="main-heading">Browser-Based Games</h2>
+        <style>
+            /* Add this to your existing <style> tag */
+            .search-container {
+                text-align: center;
+                margin-bottom: 2rem;
+            }
+        
+            #game-search {
+                width: 100%;
+                max-width: 500px;
+                padding: 12px 20px;
+                font-size: 1rem;
+                color: var(--text-color);
+                background-color: var(--surface-color);
+                border: 1px solid var(--border-color);
+                border-radius: 5px;
+                outline: none;
+                transition: border-color 0.2s;
+            }
+        
+            #game-search:focus {
+                border-color: var(--accent-color);
+            }
+        </style>
+        
+        <!-- Place this after your main heading <h2> and before the game cards -->
+        <div class="search-container">
+            <input type="text" id="game-search" placeholder="Search for a game..." />
+        </div>
+        
+        <!-- Place this before the closing </body> tag -->
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const searchInput = document.getElementById('game-search');
+                const gameCards = document.querySelectorAll('.game-card');
+        
+                searchInput.addEventListener('keyup', (event) => {
+                    const query = event.target.value.toLowerCase();
+        
+                    gameCards.forEach(card => {
+                        const title = card.querySelector('h3').textContent.toLowerCase();
+                        if (title.includes(query)) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        </script>
+        
         <div class="grid-container">
             <!-- Example Game Card -->
             <div class="game-card">
